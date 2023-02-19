@@ -127,8 +127,8 @@ function cleanCart() {
         document.getElementById(`total${comptador}`).innerHTML = "";
         comptador++
     }
-    document.getElementById("total_price").innerHTML = totalPrice; 
-    document.getElementById("count_product").innerHTML = "0"; 
+    document.getElementById("total_price").innerHTML = totalPrice;
+    document.getElementById("count_product").innerHTML = "0";
     cart.splice(0, cart.length); ////Buidem cart
 }
 
@@ -227,7 +227,7 @@ function generateCart(matriu) {
                 }
             }
 
-           // console.log(cart);
+            // console.log(cart);
         }
 
         document.getElementById("count_product").innerHTML = `${cartList.length}`;
@@ -288,6 +288,7 @@ function printCart() {
     document.getElementById("total_price").innerHTML = totalPrice.toFixed(2);
 }
 
+// ************************************************ Nivell II *****************************************************
 
 // Exercise 8 ---------------------------------------------------------------------------------------
 
@@ -297,28 +298,56 @@ function printCart() {
 
 function addToCart(id) {
 
+    matriuLength = cart.length;
+
+    if (matriuLength == 0) {
+
+        let nouObjecte = new Carts(products[id - 1].name, products[id - 1].price, products[id - 1].type, 1, products[id - 1].price, products[id - 1].price);
+        cart.push(nouObjecte);
+        console.log(cart);
+
+    } else {
+
+        let y = products[id - 1].name;
+        console.log(y);
+
+        const index = cart.findIndex(element => {
+            if (element.name === y) {
+                return true;
+            } else
+                return false;
+        });
+
+        if (index !== -1) {
+
+            cart[index].quantity++;
+            cart[index].subtotal = cart[index].price * cart[index].quantity;
+            cart[index].subtotalWithDiscount = cart[index].price * cart[index].quantity; //És el que mostrem al modal
+
+        } else {
+
+            let nouObjecte = new Carts(products[id - 1].name, products[id - 1].price, products[id - 1].type, 1, products[id - 1].price, products[id - 1].price);
+            cart.push(nouObjecte);
+        }
+    }
+
+    document.getElementById("count_product").innerHTML = `${cart.length}`;
+
+    applyPromotionsCart(cart); //Apliquem promoció amb la funció de l´exercici 5
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-// ************************************************ Nivell II *****************************************************
 
 
 // Exercise 8
 function removeFromCart(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
+
 }
+
+
+
+
 
 function open_modal() {
     console.log("Open Modal");
