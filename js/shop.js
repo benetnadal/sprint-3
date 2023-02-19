@@ -296,6 +296,11 @@ function printCart() {
 // 1. Loop for to the array products to get the item to add to cart
 // 2. Add found product to the cart array or update its quantity in case it has been added previously.
 
+/* Repassant el programa, es poden mantenir les funcionalitats simplificant el codi: això es diu fer un refactor.
+
+Podem deixar d'usar buy() i generateCart() (no els esborris, per a facilitar la correcció), per a generar el carretó en una única funció addToCart(). */
+
+
 function addToCart(id) {
 
     matriuLength = cart.length;
@@ -305,6 +310,8 @@ function addToCart(id) {
         let nouObjecte = new Carts(products[id - 1].name, products[id - 1].price, products[id - 1].type, 1, products[id - 1].price, products[id - 1].price);
         cart.push(nouObjecte);
         console.log(cart);
+        document.getElementById("count_product").innerHTML = "1";
+
 
     } else {
 
@@ -323,6 +330,7 @@ function addToCart(id) {
             cart[index].quantity++;
             cart[index].subtotal = cart[index].price * cart[index].quantity;
             cart[index].subtotalWithDiscount = cart[index].price * cart[index].quantity; //És el que mostrem al modal
+            document.getElementById("count_product").innerHTML = `${cart.length}`;
 
         } else {
 
@@ -331,22 +339,92 @@ function addToCart(id) {
         }
     }
 
-    document.getElementById("count_product").innerHTML = `${cart.length}`;
+    let q = 0;
+
+    for (i = 0; i < cart.length; i++) {
+
+        q += cart[i].quantity;
+    }
+
+    document.getElementById("count_product").innerHTML = q;
 
     applyPromotionsCart(cart); //Apliquem promoció amb la funció de l´exercici 5
 }
 
 
 
-// Exercise 8
-function removeFromCart(id) {
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cartList array
+// Exercise 9
 
+
+/* Has de completar la funció removeFromCart(), la qual rep l'id del producte per al qual es deu decrementar la seva quantitat en una unitat.
+
+Tingues en compte que si la quantitat del producte a decrementar és 1, has d'eliminar-lo del carret, no passar la seva quantitat a 0. */
+
+
+function removeFromCart(id) {
+   
+
+
+    matriuLength = cart.length;
+
+    if (matriuLength == 0) {
+
+        alert("The product is not in the basket");
+
+    } else {
+
+
+        let y = products[id - 1].name;
+
+        const index = cart.findIndex(element => {
+            if (element.name === y) {
+                return true;
+            } else
+                return false;
+        });
+
+        if (index !== -1) {
+
+            if (cart[index].quantity == 1) {
+
+                cart.splice(index, 1);
+                document.getElementById(`producte${id}`).innerHTML = "";
+                document.getElementById(`preu${id}`).innerHTML = "";
+                document.getElementById(`quantitat${id}`).innerHTML = "";
+                document.getElementById(`total${id}`).innerHTML = "";
+
+                //Buido l´ultim article visible dins el carret.
+                document.getElementById(`producte${cart.length + 1}`).innerHTML = "";
+                document.getElementById(`preu${cart.length + 1}`).innerHTML = "";
+                document.getElementById(`quantitat${cart.length + 1}`).innerHTML = "";
+                document.getElementById(`total${cart.length + 1}`).innerHTML = "";
+
+
+                console.log(cart);
+
+            } else {
+                cart[index].quantity--;
+                cart[index].subtotal = cart[index].price * cart[index].quantity;
+                cart[index].subtotalWithDiscount = cart[index].price * cart[index].quantity; //És el que mostrem al modal
+                console.log(cart);
+            }
+
+        } else {
+
+            alert("The product is not in the basket");
+
+        }
+    }
+
+    let z = 0;
+    for (i = 0; i < cart.length; i++) {
+        z = z + cart[i].quantity;
+    }
+
+    document.getElementById("count_product").innerHTML = z;
 }
 
-
-
+/************************************************************************************* */
 
 
 function open_modal() {
